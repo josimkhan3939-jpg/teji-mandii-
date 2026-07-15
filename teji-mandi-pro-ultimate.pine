@@ -75,8 +75,8 @@ tp2Profit = tp2Points * profitPerPoint
 tp3Profit = tp3Points * profitPerPoint
 
 plot(stLine, title="Supertrend", color=stBull ? color.green : color.red, linewidth=2)
-plot(donUp, title="Donchian Up", color=color.new(color.aqua, 50), linewidth=1)
-plot(donDn, title="Donchian Dn", color=color.new(color.aqua, 50), linewidth=1)
+plot(donUp, title="Donchian Up", color=color.new(color.teal, 50), linewidth=1)
+plot(donDn, title="Donchian Dn", color=color.new(color.teal, 50), linewidth=1)
 plot(ceBull ? ceL : ceS, title="Chandelier", color=color.new(color.orange, 20), linewidth=2)
 plot(hMA, title="Hull MA", color=color.new(color.purple, 0), linewidth=2)
 plot(atrThreshVal, title="ATR Threshold", color=color.new(color.yellow, 60), linewidth=1)
@@ -129,9 +129,9 @@ if barstate.islast
     table.cell(infoBox, 1, 5, text=str.tostring(tp1Points), text_size=size.small, bgcolor=color.new(color.yellow, 70))
     table.cell(infoBox, 2, 5, text="₹" + str.tostring(math.round(tp1Profit, 0)), text_size=size.small, bgcolor=color.new(color.yellow, 70))
     
-    table.cell(infoBox, 0, 6, text="TP2", text_size=size.small, bgcolor=color.new(color.aqua, 70))
-    table.cell(infoBox, 1, 6, text=str.tostring(tp2Points), text_size=size.small, bgcolor=color.new(color.aqua, 70))
-    table.cell(infoBox, 2, 6, text="₹" + str.tostring(math.round(tp2Profit, 0)), text_size=size.small, bgcolor=color.new(color.aqua, 70))
+    table.cell(infoBox, 0, 6, text="TP2", text_size=size.small, bgcolor=color.new(color.teal, 70))
+    table.cell(infoBox, 1, 6, text=str.tostring(tp2Points), text_size=size.small, bgcolor=color.new(color.teal, 70))
+    table.cell(infoBox, 2, 6, text="₹" + str.tostring(math.round(tp2Profit, 0)), text_size=size.small, bgcolor=color.new(color.teal, 70))
     
     table.cell(infoBox, 0, 7, text="TP3", text_size=size.small, bgcolor=color.new(color.green, 70))
     table.cell(infoBox, 1, 7, text=str.tostring(tp3Points), text_size=size.small, bgcolor=color.new(color.green, 70))
