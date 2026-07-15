@@ -102,7 +102,7 @@ var table infoBox = na
 if barstate.islast
     if not na(infoBox)
         table.clear(infoBox)
-    infoBox := table.new(position.top_right, 3, 10, border_color=color.gray, frame_color=color.gray, frame_width=1, start_row=0, start_column=0)
+    infoBox := table.new(position.top_right, 3, 10, border_color=color.gray, frame_color=color.gray, frame_width=1)
     
     table.cell(infoBox, 0, 0, text="TM ULTIMATE", text_size=size.small, bgcolor=color.new(#2196f3, 80))
     table.cell(infoBox, 1, 0, text=mode, text_size=size.small, bgcolor=color.new(#2196f3, 80))
