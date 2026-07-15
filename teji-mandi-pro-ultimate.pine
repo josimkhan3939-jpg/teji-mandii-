@@ -54,8 +54,8 @@ currentATR = ta.atr(atrLen)
 atrThreshVal = close * (atrThresh / 100)
 volatilityOk = currentATR > atrThreshVal
 
-bullScore = (stBull?1:0) + (donBull?1:0) + (volBull?1:0) + (ceBull?1:0) + (hullBull?1:0)
-bearScore = (stBear?1:0) + (donBear?1:0) + (volBear?1:0) + (ceBear?1:0) + (hullBear?1:0)
+bullScore = (stBull ? 1 : 0) + (donBull ? 1 : 0) + (volBull ? 1 : 0) + (ceBull ? 1 : 0) + (hullBull ? 1 : 0)
+bearScore = (stBear ? 1 : 0) + (donBear ? 1 : 0) + (volBear ? 1 : 0) + (ceBear ? 1 : 0) + (hullBear ? 1 : 0)
 
 var int regime = 0
 newBuy = bullScore == 5 and volatilityOk and regime != 1
@@ -74,15 +74,15 @@ tp1Profit = tp1Points * profitPerPoint
 tp2Profit = tp2Points * profitPerPoint
 tp3Profit = tp3Points * profitPerPoint
 
-plot(stLine, title="Supertrend", color=stBull ? color.new(#00e676, 0) : color.new(#ff1744, 0), linewidth=2)
-plot(donUp, title="Donchian Up", color=color.new(#26c6da, 50), linewidth=1)
-plot(donDn, title="Donchian Dn", color=color.new(#26c6da, 50), linewidth=1)
-plot(ceBull ? ceL : ceS, title="Chandelier", color=color.new(#ffa726, 20), linewidth=2)
-plot(hMA, title="Hull MA", color=color.new(#ab47bc, 0), linewidth=2)
-plot(atrThreshVal, title="ATR Threshold", color=color.new(#ffeb3b, 60), linewidth=1)
-plot(currentATR, title="Current ATR", color=color.new(#2196f3, 0), linewidth=2)
+plot(stLine, title="Supertrend", color=stBull ? color.green : color.red, linewidth=2)
+plot(donUp, title="Donchian Up", color=color.new(color.cyan, 50), linewidth=1)
+plot(donDn, title="Donchian Dn", color=color.new(color.cyan, 50), linewidth=1)
+plot(ceBull ? ceL : ceS, title="Chandelier", color=color.new(color.orange, 20), linewidth=2)
+plot(hMA, title="Hull MA", color=color.new(color.purple, 0), linewidth=2)
+plot(atrThreshVal, title="ATR Threshold", color=color.new(color.yellow, 60), linewidth=1)
+plot(currentATR, title="Current ATR", color=color.new(color.blue, 0), linewidth=2)
 
-bgcolor(regime == 1 ? color.new(#00e676, 92) : regime == -1 ? color.new(#ff1744, 92) : na)
+bgcolor(regime == 1 ? color.new(color.green, 92) : regime == -1 ? color.new(color.red, 92) : na)
 
 f_getConfText() =>
     bullScore == 5 ? "5/5 BULL" : bearScore == 5 ? "5/5 BEAR" : str.tostring(math.max(bullScore, bearScore)) + "/5"
@@ -90,10 +90,10 @@ f_getConfText() =>
 var label confLabel = na
 if barstate.islast
     label.delete(confLabel)
-    confLabel := label.new(bar_index, high + (high * 0.01), text=f_getConfText() + (volatilityOk ? " OK" : " NO"), color=color.new(#2196f3, 0), textcolor=color.white, style=label.style_label_down, size=size.small)
+    confLabel := label.new(bar_index, high + (high * 0.01), text=f_getConfText() + (volatilityOk ? " OK" : " NO"), color=color.new(color.blue, 0), textcolor=color.white, style=label.style_label_down, size=size.small)
 
-plotshape(series=newBuy, title="BUY", style=shape.labelup, location=location.belowbar, color=color.new(#00e676, 0), textcolor=color.white, text="BUY", size=size.large)
-plotshape(series=newSell, title="SELL", style=shape.labeldown, location=location.abovebar, color=color.new(#ff1744, 0), textcolor=color.white, text="SELL", size=size.large)
+plotshape(series=newBuy, title="BUY", style=shape.labelup, location=location.belowbar, color=color.green, textcolor=color.white, text="BUY", size=size.large)
+plotshape(series=newSell, title="SELL", style=shape.labeldown, location=location.abovebar, color=color.red, textcolor=color.white, text="SELL", size=size.large)
 
 alertcondition(newBuy, "BUY SIGNAL", message="BUY SIGNAL")
 alertcondition(newSell, "SELL SIGNAL", message="SELL SIGNAL")
@@ -104,44 +104,44 @@ if barstate.islast
         table.clear(infoBox)
     infoBox := table.new(position.top_right, 3, 10, border_color=color.gray, frame_color=color.gray, frame_width=1)
     
-    table.cell(infoBox, 0, 0, text="TM ULTIMATE", text_size=size.small, bgcolor=color.new(#2196f3, 80))
-    table.cell(infoBox, 1, 0, text=mode, text_size=size.small, bgcolor=color.new(#2196f3, 80))
-    table.cell(infoBox, 2, 0, text="GO", text_size=size.small, bgcolor=color.new(#2196f3, 80))
+    table.cell(infoBox, 0, 0, text="TM ULTIMATE", text_size=size.small, bgcolor=color.new(color.blue, 80))
+    table.cell(infoBox, 1, 0, text=mode, text_size=size.small, bgcolor=color.new(color.blue, 80))
+    table.cell(infoBox, 2, 0, text="GO", text_size=size.small, bgcolor=color.new(color.blue, 80))
     
-    table.cell(infoBox, 0, 1, text="Conf", text_size=size.small, bgcolor=color.new(#ab47bc, 70))
-    table.cell(infoBox, 1, 1, text=str.tostring(math.max(bullScore, bearScore)), text_size=size.small, bgcolor=color.new(#ab47bc, 70))
-    table.cell(infoBox, 2, 1, text=volatilityOk ? "OK" : "NO", text_size=size.small, bgcolor=color.new(#ab47bc, 70))
+    table.cell(infoBox, 0, 1, text="Conf", text_size=size.small, bgcolor=color.new(color.purple, 70))
+    table.cell(infoBox, 1, 1, text=str.tostring(math.max(bullScore, bearScore)), text_size=size.small, bgcolor=color.new(color.purple, 70))
+    table.cell(infoBox, 2, 1, text=volatilityOk ? "OK" : "NO", text_size=size.small, bgcolor=color.new(color.purple, 70))
     
-    table.cell(infoBox, 0, 2, text="Trend", text_size=size.small, bgcolor=color.new(#ffa726, 70))
+    table.cell(infoBox, 0, 2, text="Trend", text_size=size.small, bgcolor=color.new(color.orange, 70))
     trendStr = regime == 1 ? "BULL" : regime == -1 ? "BEAR" : "FLAT"
-    table.cell(infoBox, 1, 2, text=trendStr, text_size=size.small, bgcolor=color.new(#ffa726, 70))
+    table.cell(infoBox, 1, 2, text=trendStr, text_size=size.small, bgcolor=color.new(color.orange, 70))
     table.cell(infoBox, 2, 2, text="", text_size=size.small)
     
-    table.cell(infoBox, 0, 3, text="Lots", text_size=size.small, bgcolor=color.new(#00e676, 70))
-    table.cell(infoBox, 1, 3, text=str.tostring(lotSize), text_size=size.small, bgcolor=color.new(#00e676, 70))
-    table.cell(infoBox, 2, 3, text="1K/pt", text_size=size.small, bgcolor=color.new(#00e676, 70))
+    table.cell(infoBox, 0, 3, text="Lots", text_size=size.small, bgcolor=color.new(color.green, 70))
+    table.cell(infoBox, 1, 3, text=str.tostring(lotSize), text_size=size.small, bgcolor=color.new(color.green, 70))
+    table.cell(infoBox, 2, 3, text="1K/pt", text_size=size.small, bgcolor=color.new(color.green, 70))
     
-    table.cell(infoBox, 0, 4, text="SL", text_size=size.small, bgcolor=color.new(#ff1744, 70))
-    table.cell(infoBox, 1, 4, text=str.tostring(stopLoss), text_size=size.small, bgcolor=color.new(#ff1744, 70))
-    table.cell(infoBox, 2, 4, text="₹" + str.tostring(math.round(slLoss, 0)), text_size=size.small, bgcolor=color.new(#ff1744, 70))
+    table.cell(infoBox, 0, 4, text="SL", text_size=size.small, bgcolor=color.new(color.red, 70))
+    table.cell(infoBox, 1, 4, text=str.tostring(stopLoss), text_size=size.small, bgcolor=color.new(color.red, 70))
+    table.cell(infoBox, 2, 4, text="₹" + str.tostring(math.round(slLoss, 0)), text_size=size.small, bgcolor=color.new(color.red, 70))
     
-    table.cell(infoBox, 0, 5, text="TP1", text_size=size.small, bgcolor=color.new(#ffeb3b, 70))
-    table.cell(infoBox, 1, 5, text=str.tostring(tp1Points), text_size=size.small, bgcolor=color.new(#ffeb3b, 70))
-    table.cell(infoBox, 2, 5, text="₹" + str.tostring(math.round(tp1Profit, 0)), text_size=size.small, bgcolor=color.new(#ffeb3b, 70))
+    table.cell(infoBox, 0, 5, text="TP1", text_size=size.small, bgcolor=color.new(color.yellow, 70))
+    table.cell(infoBox, 1, 5, text=str.tostring(tp1Points), text_size=size.small, bgcolor=color.new(color.yellow, 70))
+    table.cell(infoBox, 2, 5, text="₹" + str.tostring(math.round(tp1Profit, 0)), text_size=size.small, bgcolor=color.new(color.yellow, 70))
     
-    table.cell(infoBox, 0, 6, text="TP2", text_size=size.small, bgcolor=color.new(#26c6da, 70))
-    table.cell(infoBox, 1, 6, text=str.tostring(tp2Points), text_size=size.small, bgcolor=color.new(#26c6da, 70))
-    table.cell(infoBox, 2, 6, text="₹" + str.tostring(math.round(tp2Profit, 0)), text_size=size.small, bgcolor=color.new(#26c6da, 70))
+    table.cell(infoBox, 0, 6, text="TP2", text_size=size.small, bgcolor=color.new(color.cyan, 70))
+    table.cell(infoBox, 1, 6, text=str.tostring(tp2Points), text_size=size.small, bgcolor=color.new(color.cyan, 70))
+    table.cell(infoBox, 2, 6, text="₹" + str.tostring(math.round(tp2Profit, 0)), text_size=size.small, bgcolor=color.new(color.cyan, 70))
     
-    table.cell(infoBox, 0, 7, text="TP3", text_size=size.small, bgcolor=color.new(#00e676, 70))
-    table.cell(infoBox, 1, 7, text=str.tostring(tp3Points), text_size=size.small, bgcolor=color.new(#00e676, 70))
-    table.cell(infoBox, 2, 7, text="₹" + str.tostring(math.round(tp3Profit, 0)), text_size=size.small, bgcolor=color.new(#00e676, 70))
+    table.cell(infoBox, 0, 7, text="TP3", text_size=size.small, bgcolor=color.new(color.green, 70))
+    table.cell(infoBox, 1, 7, text=str.tostring(tp3Points), text_size=size.small, bgcolor=color.new(color.green, 70))
+    table.cell(infoBox, 2, 7, text="₹" + str.tostring(math.round(tp3Profit, 0)), text_size=size.small, bgcolor=color.new(color.green, 70))
     
-    table.cell(infoBox, 0, 8, text="TOTAL", text_size=size.small, bgcolor=color.new(#4caf50, 70), text_color=color.white)
+    table.cell(infoBox, 0, 8, text="TOTAL", text_size=size.small, bgcolor=color.new(color.lime, 70), text_color=color.white)
     totalProfit = tp1Profit + tp2Profit + tp3Profit
-    table.cell(infoBox, 1, 8, text="Per Trade", text_size=size.small, bgcolor=color.new(#4caf50, 70), text_color=color.white)
-    table.cell(infoBox, 2, 8, text="₹" + str.tostring(math.round(totalProfit, 0)), text_size=size.small, bgcolor=color.new(#4caf50, 70), text_color=color.white)
+    table.cell(infoBox, 1, 8, text="Per Trade", text_size=size.small, bgcolor=color.new(color.lime, 70), text_color=color.white)
+    table.cell(infoBox, 2, 8, text="₹" + str.tostring(math.round(totalProfit, 0)), text_size=size.small, bgcolor=color.new(color.lime, 70), text_color=color.white)
     
-    table.cell(infoBox, 0, 9, text="STATUS", text_size=size.small, bgcolor=color.new(#2196f3, 70))
-    table.cell(infoBox, 1, 9, text="READY", text_size=size.small, bgcolor=color.new(#2196f3, 70))
-    table.cell(infoBox, 2, 9, text="GO", text_size=size.small, bgcolor=color.new(#2196f3, 70))
+    table.cell(infoBox, 0, 9, text="STATUS", text_size=size.small, bgcolor=color.new(color.blue, 70))
+    table.cell(infoBox, 1, 9, text="READY", text_size=size.small, bgcolor=color.new(color.blue, 70))
+    table.cell(infoBox, 2, 9, text="GO", text_size=size.small, bgcolor=color.new(color.blue, 70))
